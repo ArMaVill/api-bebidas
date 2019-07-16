@@ -1,12 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require("path");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const Bebida = require("./bebida");
 
 const app = express();
+const db =
+  "mongodb+srv://vending-machine:vending-machine@vending-machine-05zou.gcp.mongodb.net/test?retryWrites=true&w=majority";
+mongoose.connect(db, { useNewUrlParser: true });
+mongoose.set("useFindAndModify", false);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-let x;
+app.use(cors());
 
 const bebidas = [
   {
@@ -34,7 +41,7 @@ const bebidas = [
     id: 4,
     nombre: "Cappuccino",
     descripcion:
-      "A cappuccino is an espresso-based coffee drink that originated in Italy, and is traditionally prepared with steamed milk foam.",
+      "A cappuccino is an espresso-based coffee drink that originated in Italy",
     precio: 550,
     cantidad: 20
   },
@@ -59,7 +66,7 @@ app.get("/", (req, res) => {
     codigo: 200,
     mensaje: "Punto de inicio"
   };
-  res.send(respuesta);
+  res.sendFile(path.join(`${__dirname}/index.html`));
 });
 
 app
@@ -69,17 +76,23 @@ app
       respuesta = {
         error: true,
         codigo: 501,
-        mensaje: "no hay suficientes bebidas"
+        mensaje: "no hay suficientes bebidas",
+        respuesta: []
       };
     } else {
-      respuesta = {
-        error: false,
-        codigo: 200,
-        mensaje: "Lista de bebidas",
-        respuesta: bebidas
-      };
+      Bebida.find()
+        .exec()
+        .then(data => {
+          respuesta = {
+            error: false,
+            codigo: 200,
+            mensaje: "Lista de bebidas",
+            respuesta: data
+          };
+          res.send(respuesta);
+        })
+        .catch();
     }
-    res.send(respuesta);
   })
   .post((req, res) => {
     if (
@@ -94,15 +107,21 @@ app
         mensaje: "Faltan datos"
       };
     } else {
-      const index = bebidas.length - 1;
-      const nuevaBebida = {
-        id: bebidas[index].id + 1,
+      // const index = bebidas.length - 1;
+      const nuevaBebida = new Bebida({
+        _id: new mongoose.Types.ObjectId(),
         nombre: req.body.nombre,
-        apellido: req.body.apellido,
+        descripcion: req.body.descripcion,
         cantidad: req.body.cantidad,
         precio: req.body.precio
-      };
-      bebidas.push(nuevaBebida);
+      });
+      nuevaBebida
+        .save()
+        .then(result => {
+          console.log(result);
+        })
+        .catch();
+      // bebidas.push(nuevaBebida);
 
       respuesta = {
         error: false,
@@ -117,7 +136,7 @@ app
 app
   .route("/bebidas/:id")
   .get((req, res) => {
-    const id = Number(req.params.id);
+    const { id } = req.params;
 
     if (bebidas.length < 1 || bebidas === undefined) {
       respuesta = {
@@ -126,26 +145,32 @@ app
         mensaje: "no hay suficientes bebidas"
       };
     } else {
-      const bebida = bebidas.find(item => item.id === id);
+      const bebida = [];
       if (bebida === undefined) {
         respuesta = {
           error: true,
           codigo: 501,
-          mensaje: `No se encontro la bebida con el id${req.params.id}`
+          mensaje: `No se encontro la bebida con el id ${req.params.id}`
         };
       } else {
-        respuesta = {
-          error: false,
-          codigo: 200,
-          mensaje: "Bebida encontrada",
-          respuesta: bebida
-        };
+        Bebida.findById(id)
+          .exec()
+          .then(data => {
+            respuesta = {
+              error: false,
+              codigo: 200,
+              mensaje: "Bebida encontrada",
+              respuesta: data
+            };
+            res.send(respuesta);
+          })
+          .catch();
       }
     }
-    res.send(respuesta);
   })
   .put((req, res) => {
-    const id = Number(req.params.id);
+    const { id } = req.params;
+    console.log(`ID:${id}`);
     if (
       !req.body.nombre ||
       !req.body.descripcion ||
@@ -157,56 +182,46 @@ app
         codigo: 502,
         mensaje: "Faltan datos"
       };
-    } else if (Number.isNaN(id) || id > bebidas.length) {
-      respuesta = {
-        error: false,
-        codigo: 200,
-        mensaje: `No se encontro la bebida con el id ${req.params.id}`
-      };
     } else {
-      const index = bebidas.findIndex(item => item.id === id);
-      bebidas[index].nombre = req.body.nombre;
-      bebidas[index].descripcion = req.body.descripcion;
-      bebidas[index].cantidad = req.body.cantidad;
-      bebidas[index].precio = req.body.precio;
-
-      respuesta = {
-        error: false,
-        codigo: 200,
-        mensaje: "Se inserto nueva bebida",
-        respuesta: bebidas[index]
-      };
+      Bebida.findByIdAndUpdate(id, {
+        nombre: req.body.nombre,
+        descripcion: req.body.descripcion,
+        cantidad: req.body.cantidad,
+        precio: req.body.precio
+      })
+        .then(data => {
+          respuesta = {
+            error: false,
+            codigo: 200,
+            mensaje: "Bebida encontrada",
+            respuesta: data
+          };
+          res.send(respuesta);
+        })
+        .catch();
     }
-    res.send(respuesta);
   })
   .delete((req, res) => {
-    const id = Number(req.params.id);
-    if (Number.isNaN(id)) {
-      respuesta = {
-        error: true,
-        codigo: 502,
-        mensaje: `No se puede eliminar la bebida con el id ${req.params.id}`
-      };
-    } else {
-      const index = bebidas.findIndex(item => item.id === id);
-      if (index >= 0) {
-        const bebida = bebidas[index];
-        bebidas.splice(index, 1);
+    const { id } = req.params;
+
+    Bebida.findOneAndRemove(id, (err, data) => {
+      if (err) {
         respuesta = {
           error: false,
           codigo: 200,
           mensaje: "Se elimino la bebida",
-          respuesta: bebida
+          respuesta: err
         };
       } else {
         respuesta = {
           error: false,
           codigo: 200,
-          mensaje: `No se puede eliminar la bebida con el id ${req.params.id}`
+          mensaje: "Se elimino la bebida",
+          respuesta: data
         };
       }
-    }
-    res.send(respuesta);
+      return res.send(respuesta);
+    });
   });
 
 app.use((req, res, next) => {

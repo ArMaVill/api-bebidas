@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+  </head>
+  <body class="container">
+    <h1>Rest Api de bebidas</h1>
+    <h3>Enpoints</h3>
+    
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h2 class="mb-0">
+            <button
+              class="btn btn-link"
+              type="button"           
+            >
+              Bebidas
+            </button>
+          </h2>
+        </div>
+
+        <div>
+          <div class="card-body">
+            <div class="accordion" id="accordionExample">
+              <div class="card">
+                <div class="card-header" id="heading1">
+                  <h5 class="mb-0">
+                    <button
+                      class="btn btn-primary collapsed"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target="#collapse1"
+                      aria-expanded="false"
+                      aria-controls="collapse1"
+                    >
+                      Get
+                    </button>
+                    /bebidas/
+                  </h5>
+                </div>
+                <div
+                  id="collapse1"
+                  class="collapse"
+                  aria-labelledby="headingThree"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    Muestra una lista con todas las bebidas
+                  </div>
+                </div>
+              </div>
+             
+              <div class="card">
+                <div class="card-header" id="headingThree">
+                  <h5 class="mb-0">
+                    <button
+                      class="btn btn-success collapsed"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target="#collapse2"
+                      aria-expanded="false"
+                      aria-controls="collapse2"
+                    >
+                      Post
+                    </button>
+                    /bebidas/
+                  </h5>
+                </div>
+                <div
+                  id="collapse2"
+                  class="collapse"
+                  aria-labelledby="headingThree"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    Inserta Una nueva bebida con los valores de los parametros
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Parametros</h5>
+                          <p>Nombre: String</p>
+                          <p>Descripcion: String</p>
+                          <p>Precio: Number</p>
+                          <p>Cantidad: Number</p>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header" id="headingThree">
+                  <h5 class="mb-0">
+                    <button
+                      class="btn btn-primary collapsed"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target="#collapse3"
+                      aria-expanded="false"
+                      aria-controls="collapse3"
+                    >
+                      Get
+                    </button>
+                    /bebidas/:id
+                  </h5>
+                </div>
+                <div
+                  id="collapse3"
+                  class="collapse"
+                  aria-labelledby="headingThree"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    Muestra muestra la bebida con el id especificado en la ruta
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header" id="headingThree">
+                  <h5 class="mb-0">
+                    <button
+                      class="btn btn-warning collapsed"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target="#collapse4"
+                      aria-expanded="false"
+                      aria-controls="collapse4"
+                    >
+                      Put
+                    </button>
+                    /bebidas/:id
+                  </h5>
+                </div>
+                <div
+                  id="collapse4"
+                  class="collapse"
+                  aria-labelledby="headingThree"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    Modifica la bebida con el id especificado en la ruta con los
+                    parametros
+                    <div class="card">
+                      <div class="card-body">
+                          <h5 class="card-title">Parametros</h5>
+                        <p>Nombre: String</p>
+                        <p>Descripcion: String</p>
+                        <p>Precio: Number</p>
+                        <p>Cantidad: Number</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header" id="headingThree">
+                  <h5 class="mb-0">
+                    <button
+                      class="btn btn-danger collapsed"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target="#collapse5"
+                      aria-expanded="false"
+                      aria-controls="collapse5"
+                    >
+                      Delete
+                    </button>
+                    /bebidas/:id
+                  </h5>
+                </div>
+                <div
+                  id="collapse5"
+                  class="collapse"
+                  aria-labelledby="headingThree"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    Elminina la bebida con el id especificado en la ruta
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

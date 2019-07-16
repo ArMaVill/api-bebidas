@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const http = require("http");
 const Bebida = require("./bebida");
 
+const port = process.env.PORT || 3000;
+
 const app = express();
 const db =
   "mongodb+srv://vending-machine:vending-machine@vending-machine-05zou.gcp.mongodb.net/test?retryWrites=true&w=majority";
@@ -16,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log("El servidor está inicializado en el puerto 3000");
 });
 

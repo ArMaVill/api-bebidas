@@ -15,44 +15,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-const bebidas = [
-  {
-    id: 1,
-    nombre: "Cafe negro",
-    descripcion: "taza de Cafe negro",
-    precio: 500,
-    cantidad: 20
-  },
-  {
-    id: 2,
-    nombre: "Cafe con leche",
-    descripcion: "taza de cafe negro",
-    precio: 550,
-    cantidad: 20
-  },
-  {
-    id: 3,
-    nombre: "Expreso",
-    descripcion: "taza de cafe negro, fuerte",
-    precio: 550,
-    cantidad: 20
-  },
-  {
-    id: 4,
-    nombre: "Cappuccino",
-    descripcion:
-      "A cappuccino is an espresso-based coffee drink that originated in Italy",
-    precio: 550,
-    cantidad: 20
-  },
-  {
-    id: 5,
-    nombre: "Cafe con leche",
-    descripcion: "taza de Cafe negro",
-    precio: 550,
-    cantidad: 20
-  }
-];
+app.listen(3000, () => {
+  console.log("El servidor está inicializado en el puerto 3000");
+});
+
+const bebidas = [];
 
 let respuesta = {
   error: false,
@@ -170,7 +137,6 @@ app
   })
   .put((req, res) => {
     const { id } = req.params;
-    console.log(`ID:${id}`);
     if (
       !req.body.nombre ||
       !req.body.descripcion ||
@@ -231,8 +197,4 @@ app.use((req, res, next) => {
     mensaje: "URL no encontrada"
   };
   res.status(404).send(respuesta);
-});
-
-app.listen(3000, () => {
-  console.log("El servidor está inicializado en el puerto 3000");
 });

@@ -42,27 +42,18 @@ app.get("/", (req, res) => {
 app
   .route("/bebidas")
   .get((req, res) => {
-    if (bebidas.length < 1 || bebidas === undefined) {
-      respuesta = {
-        error: true,
-        codigo: 501,
-        mensaje: "no hay suficientes bebidas",
-        respuesta: []
-      };
-    } else {
-      Bebida.find()
-        .exec()
-        .then(data => {
-          respuesta = {
-            error: false,
-            codigo: 200,
-            mensaje: "Lista de bebidas",
-            respuesta: data
-          };
-          res.send(respuesta);
-        })
-        .catch();
-    }
+    Bebida.find()
+      .exec()
+      .then(data => {
+        respuesta = {
+          error: false,
+          codigo: 200,
+          mensaje: "Lista de bebidas",
+          respuesta: data
+        };
+        res.send(respuesta);
+      })
+      .catch();
   })
   .post((req, res) => {
     if (
@@ -108,35 +99,18 @@ app
   .get((req, res) => {
     const { id } = req.params;
 
-    if (bebidas.length < 1 || bebidas === undefined) {
-      respuesta = {
-        error: true,
-        codigo: 501,
-        mensaje: "no hay suficientes bebidas"
-      };
-    } else {
-      const bebida = [];
-      if (bebida === undefined) {
+    Bebida.findById(id)
+      .exec()
+      .then(data => {
         respuesta = {
-          error: true,
-          codigo: 501,
-          mensaje: `No se encontro la bebida con el id ${req.params.id}`
+          error: false,
+          codigo: 200,
+          mensaje: "Bebida encontrada",
+          respuesta: data
         };
-      } else {
-        Bebida.findById(id)
-          .exec()
-          .then(data => {
-            respuesta = {
-              error: false,
-              codigo: 200,
-              mensaje: "Bebida encontrada",
-              respuesta: data
-            };
-            res.send(respuesta);
-          })
-          .catch();
-      }
-    }
+        res.send(respuesta);
+      })
+      .catch();
   })
   .put((req, res) => {
     const { id } = req.params;

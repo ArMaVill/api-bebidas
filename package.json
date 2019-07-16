@@ -4,6 +4,7 @@
   "repository": "https://github.com/ArMaVill/api-bebidas",
   "description": "Api for homework",
   "main": "index.js",
+  "homepage": "",
   "scripts": {
     "start": "node index.js"
   },
